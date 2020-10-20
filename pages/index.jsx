@@ -9,7 +9,7 @@ export default function Home({channels}) {
       <header className={styles.header}>Podcasts</header>
       <div className={styles.channels}>
         {channels.map(channel => (
-          <Link href='/channel'>
+          <Link key={channel.id} href={`/channel?id=${channel.id}`}>
             <a className={styles.channel}>
               <img
                 className={styles.img}
@@ -38,12 +38,15 @@ export default function Home({channels}) {
 // };
 
 export const getServerSideProps = async ctx => {
-  const res = await API.get('channels/recommended');
-  const {body: channels} = await res.data;
-
-  return {
-    props: {
-      channels,
-    },
-  };
+  try {
+    const res = await API.get('channels/recommended');
+    const {body: channels} = await res.data;
+    return {
+      props: {
+        channels,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
