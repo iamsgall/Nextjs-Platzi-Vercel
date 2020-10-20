@@ -35,7 +35,9 @@ export default function Channel({channel, series, audios}) {
       <h2 className={styles.series}>Ultimos Podcasts</h2>
       {audios.map(audio => (
         <div className={styles.podcast} key={audio.id}>
-          {audio.title}
+          <Link href={`/podcast?id=${audio.id}`}>
+            <a>{audio.title}</a>
+          </Link>
         </div>
       ))}
     </>
