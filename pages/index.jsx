@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.sass';
 import API from '../utils/API';
 import 'isomorphic-fetch';
+import Link from 'next/link';
 
 export default function Home({channels}) {
   return (
@@ -8,14 +9,16 @@ export default function Home({channels}) {
       <header className={styles.header}>Podcasts</header>
       <div className={styles.channels}>
         {channels.map(channel => (
-          <div className={styles.channel}>
-            <img
-              className={styles.img}
-              src={channel.urls.logo_image.original}
-              alt=''
-            />
-            <h2 className={styles.title}>{channel.title}</h2>
-          </div>
+          <Link href='/channel'>
+            <a className={styles.channel}>
+              <img
+                className={styles.img}
+                src={channel.urls.logo_image.original}
+                alt=''
+              />
+              <h2 className={styles.title}>{channel.title}</h2>
+            </a>
+          </Link>
         ))}
       </div>
       div
