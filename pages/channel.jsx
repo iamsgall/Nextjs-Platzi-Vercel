@@ -1,46 +1,16 @@
 import API from '../utils/API';
-import Link from 'next/link';
-import styles from '../styles/Channel.module.sass';
+import Layout from '../components/Layout.jsx';
+import PodcastList from '../components/PodcastList.jsx';
+import Series from '../components/Series.jsx';
+import Banner from '../components/Banner.jsx';
 
 export default function Channel({channel, series, audios}) {
   return (
-    <>
-      <header className={styles.header}>Podcasts</header>
-      <div
-        className={styles.banner}
-        style={{backgroundImage: `url(${channel.urls.logo_image.original})`}}
-      >
-        <h1 className={styles.title}>{channel.title}</h1>
-
-        {series.length > 0 && (
-          <div>
-            <h2 className={styles.series}>Series</h2>
-            <div className={styles.channels}>
-              {series.map(serie => (
-                <Link href={`/channel?id=${serie.id}`}>
-                  <a className={styles.channel}>
-                    <img
-                      className={styles.channel_img}
-                      src={serie.urls.logo_image.original}
-                      alt=''
-                    />
-                    <h2 className={styles.series}>{serie.title}</h2>
-                  </a>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      <h2 className={styles.series}>Ultimos Podcasts</h2>
-      {audios.map(audio => (
-        <div className={styles.podcast} key={audio.id}>
-          <Link href={`/podcast?id=${audio.id}`}>
-            <a>{audio.title}</a>
-          </Link>
-        </div>
-      ))}
-    </>
+    <Layout title={channel.title}>
+      <Banner channel={channel} />
+      {series.length > 0 && <Series series={series} />}
+      <PodcastList audios={audios} />
+    </Layout>
   );
 }
 

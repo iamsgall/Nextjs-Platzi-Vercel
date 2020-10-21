@@ -7,6 +7,10 @@ export default function Layout({title, children}) {
     <div>
       <Head>
         <title>{title}</title>
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1'
+        ></meta>
       </Head>
       <header className={styles.header}>
         <Link href='/'>
