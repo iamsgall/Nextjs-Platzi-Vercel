@@ -14,7 +14,7 @@ export default function Layout({title, children}) {
       </Head>
       <header className={styles.header}>
         <Link href='/'>
-          <a>{title}</a>
+          <a>Podcast</a>
         </Link>
       </header>
       {children}

@@ -2,7 +2,7 @@ import API from '../utils/API';
 import 'isomorphic-fetch';
 import Layout from '../components/Layout.jsx';
 import ChannelGrid from '../components/ChannelGrid';
-import Error from 'next/error';
+import Error from './_error';
 
 export default function Home({channels, statusCode}) {
   if (statusCode !== 200) {

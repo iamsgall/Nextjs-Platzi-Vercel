@@ -1,9 +1,8 @@
-import API from '../utils/API';
-import styles from '../styles/Podcast.module.sass';
+import API from '../../../../utils/API';
+import styles from '../../../../styles/Podcast.module.sass';
 import Link from 'next/link';
 
 export default function Podcast({audio}) {
-  console.log(audio);
   return (
     <>
       <header className={styles.header}>Podcasts</header>
@@ -37,10 +36,11 @@ export default function Podcast({audio}) {
 }
 
 export const getServerSideProps = async ({query}) => {
-  const idPodcast = query.id;
+  console.log(query);
+  const id = query.pid;
 
   try {
-    const res = await API.get(`audio_clips/${idPodcast}.mp3`);
+    const res = await API.get(`audio_clips/${id}.mp3`);
     // https: api.audioboom.com/audio_clips/4635940.mp3
     const dataAudio = await res.data;
     const audio = await dataAudio.body.audio_clip;

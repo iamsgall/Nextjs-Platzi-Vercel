@@ -1,9 +1,9 @@
-import API from '../utils/API';
-import Layout from '../components/Layout.jsx';
-import PodcastList from '../components/PodcastList.jsx';
-import Series from '../components/Series.jsx';
-import Banner from '../components/Banner.jsx';
-import Error from 'next/error';
+import API from '../../../utils/API';
+import Layout from '../../../components/Layout.jsx';
+import PodcastList from '../../../components/PodcastList.jsx';
+import ChannelGrid from '../../../components/ChannelGrid.jsx';
+import Banner from '../../../components/Banner.jsx';
+import Error from '../../_error';
 
 export default function Channel({channel, series, audios, statusCode}) {
   if (statusCode !== 200) {
@@ -12,14 +12,15 @@ export default function Channel({channel, series, audios, statusCode}) {
   return (
     <Layout title={channel.title}>
       <Banner channel={channel} />
-      {series.length > 0 && <Series series={series} />}
-      <PodcastList audios={audios} />
+      {series.length > 0 && <ChannelGrid channels={series} />}
+      <PodcastList audios={audios} channel={channel} />
     </Layout>
   );
 }
 
 export const getServerSideProps = async ({query, res}) => {
-  const id = query.id;
+  console.log(query); //{ slug: 'posta', cid: '4702115' }
+  const id = query.cid;
 
   try {
     const [resChannel, resSeries, resAudios] = await Promise.all([
@@ -27,6 +28,23 @@ export const getServerSideProps = async ({query, res}) => {
       API.get(`channels/${id}/child_channels`),
       API.get(`channels/${id}/audio_clips`),
     ]);
+
+    if (
+      resChannel.status >= 400 ||
+      resSeries.status >= 400 ||
+      resAudios.status >= 400
+    ) {
+      res.statusCode =
+        resChannel.status || resSeries.status || resAudios.status;
+      return {
+        props: {
+          channel: null,
+          series: null,
+          audios: null,
+          statusCode: resChannel.status || resSeries.status || resAudios.status,
+        },
+      };
+    }
 
     const dataChannel = await resChannel.data;
     const channel = await dataChannel.body.channel;
